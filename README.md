@@ -3,6 +3,7 @@
 为拼多多打造的 iOS 26 风格液态玻璃底部导航栏 · LSPosed 模块（libxposed API 102）
 
 > 当前版本：v1.0.19，APK 见 [Releases](https://github.com/lengroo/pdd-LiquidGlass/releases)。
+> 本项目：[lengroo/pdd-LiquidGlass](https://github.com/lengroo/pdd-LiquidGlass)
 > 已上架 LSPosed 官方仓库：[Xposed-Modules-Repo/io.github.lengroo.pddlg](https://github.com/Xposed-Modules-Repo/io.github.lengroo.pddlg)
 
 ## ✨ 特性
@@ -113,7 +114,7 @@ lens(refractionHeight = 10dp × p, refractionAmount = 14dp × p,
 
 两处易被忽略但决定手感的细节：位置以标签为单位追踪，速度按标签数归一化，
 因此不同屏幕密度手感一致；`release()` 会**等液滴接近目标**才回落缩放，
-这样甩动读起来是一个连贯动作而非"滑动 + 单独缩回"。
+这样甩动读起来是一个连贯动作而非“滑动 + 单独缩回”。
 
 点击切换也走同一条路径（press → 移动 → release），与拖拽完全一致。
 
