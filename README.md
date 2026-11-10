@@ -1,5 +1,4 @@
 # 拼多多底栏液态玻璃 · pdd-LiquidGlass
-
 为拼多多打造的 iOS 26 风格液态玻璃底部导航栏 · LSPosed 模块（libxposed API 102）
 
 > 当前版本：v1.0.22，APK 见 [Releases](https://github.com/lengroo/pdd-LiquidGlass/releases)。
