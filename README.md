@@ -39,11 +39,11 @@ Android 12 以下退化为轻磨砂；native 模糊库不可用时自动切纯 J
 `MainFrameContainerView`（RelativeLayout）——所以安装器只有一套：
 ```
 Hook Instrumentation.callActivityOnResume
-└─ 主界面 Activity：按类名定位底栏（资源 ID 被 AndResGuard 混淆，不可用）
-   └─ 布局手术：把底栏搬进 LiquidGlassHostLayout
-      ├─ 玻璃层 LiquidGlassView（backdrop = 底栏原本的全屏兄弟）
-      ├─ 液滴层 LiquidGlassView（跟随选中项，可拖拽）
-      └─ 应用原生底栏（背景已清空）
+  └─ 主界面 Activity：按类名定位底栏（资源 ID 被 AndResGuard 混淆，不可用）
+       └─ 布局手术：把底栏搬进 LiquidGlassHostLayout
+            ├─ 玻璃层 LiquidGlassView（backdrop = 底栏原本的全屏兄弟）
+            ├─ 液滴层 LiquidGlassView（跟随选中项，可拖拽）
+            └─ 应用原生底栏（背景已清空）
 ```
 
 应用相关的部分全在 `HostApp` 里：
