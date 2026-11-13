@@ -1,4 +1,5 @@
 # 拼多多底栏液态玻璃 · pdd-LiquidGlass
+
 为拼多多打造的 iOS 26 风格液态玻璃底部导航栏 · LSPosed 模块（libxposed API 102）
 
 > 当前版本：v1.0.23，APK 见 [Releases](https://github.com/lengroo/pdd-LiquidGlass/releases)。
@@ -10,7 +11,7 @@
 - 🫧 **单 pass AGSL 透镜管线**：圆角矩形 SDF 折射、边缘色散、重力传感器高光
 - 💧 **玻璃滴选中动效**：切换标签时液滴滑动、回弹；**支持横向拖拽切换**，跟手拉伸、松手吸附
 - 🎯 **对齐 KernelSU 管理器**：悬浮 pill 宽度贴合内容、4dp 轻模糊 + 容器色垫底、
-  按压时液滴放大 `1.2×` 并淡入折射、焦点标签放大 `1.1×`
+按压时液滴放大 `78/56（约 1.39×）` 并淡入折射、焦点标签放大 `1.1×`
 - 🔍 **背景实时跟随**：玻璃折射的是当前页面的真实内容，切页即变
 - 🧩 **完整保留原生功能**：未读角标、图标、文字颜色全部走应用自己的实现，角标不参与染色
 - 📱 **单宿主**：只做拼多多，差异集中在 `HostApp` 一张表里
@@ -18,7 +19,7 @@
 - 🎛️ **数值微调**：设置界面「微调」卡片可调药丸离底边距离（0–48dp）、药丸额外高度（0–24dp）、药丸左右边距（每边 0–48dp），改完切回拼多多即生效，无需重装
 - 🧭 **设置界面**：微调 / 主题 / 关于三个页面，下拉框选择主题，返回键先收起下拉框
 - ♿ **降级兜底**：Android 12 保留 GPU 模糊与液滴，只少了边缘折射（AGSL 需 13）；
-  Android 12 以下退化为轻磨砂；native 模糊库不可用时自动切纯 Java 实现
+Android 12 以下退化为轻磨砂；native 模糊库不可用时自动切纯 Java 实现
 
 ## 📦 安装
 
@@ -27,9 +28,7 @@
 3. **强制停止**拼多多后重新打开
 
 > 已测试：拼多多 `8.29.0` / `8.30.0`
->
 > 包名：`io.github.lengroo.pddlg`（1.0.19 起；旧包 `io.github.lengroo.pddliquidglass` 需先卸载再装新包，直接覆盖安装会失败）
->
 > 两个版本：`PddLG-vX.Y.Z.apk`（带设置界面）和 `PddLG-vX.Y.Z-noui.apk`（无界面模块版），功能相同，按需选择。
 
 已知问题：切换标签页时 feed 会短暂闪一下黑，页面加载完就恢复。
@@ -38,19 +37,18 @@
 
 拼多多的主界面结构和微信是双胞胎——内容区铺满全屏，底栏浮在它上面，同处一个
 `MainFrameContainerView`（RelativeLayout）——所以安装器只有一套：
-
 ```
 Hook Instrumentation.callActivityOnResume
-  └─ 主界面 Activity：按类名定位底栏（资源 ID 被 AndResGuard 混淆，不可用）
-       └─ 布局手术：把底栏搬进 LiquidGlassHostLayout
-            ├─ 玻璃层 LiquidGlassView（backdrop = 底栏原本的全屏兄弟）
-            ├─ 液滴层 LiquidGlassView（跟随选中项，可拖拽）
-            └─ 应用原生底栏（背景已清空）
+└─ 主界面 Activity：按类名定位底栏（资源 ID 被 AndResGuard 混淆，不可用）
+   └─ 布局手术：把底栏搬进 LiquidGlassHostLayout
+      ├─ 玻璃层 LiquidGlassView（backdrop = 底栏原本的全屏兄弟）
+      ├─ 液滴层 LiquidGlassView（跟随选中项，可拖拽）
+      └─ 应用原生底栏（背景已清空）
 ```
 
 应用相关的部分全在 `HostApp` 里：
 
-|  | 拼多多 |
+| | 拼多多 |
 | --- | --- |
 | 包名 | `com.xunmeng.pinduoduo` |
 | 主界面 Activity | `ui.activity.MainFrameActivity`（另有 `ui.activity.HomeActivity` 入口） |
@@ -63,9 +61,7 @@ Hook Instrumentation.callActivityOnResume
 日志 tag：`LiquidGlass`
 
 ## 🛠️ 构建
-
-无需 Gradle / Android Studio：
-
+无需 Gradle / Android Studio:
 ```
 ./setup-tools.sh   # 下载 android.jar / build-tools 34 / libxposed
 ./build.sh         # 无界面版 → PddLG-vX.Y.Z-noui.apk
@@ -84,14 +80,13 @@ Hook Instrumentation.callActivityOnResume
 | 底部抬升 | `GlassConfig.barOffsetDp`（设置界面「微调」可调） | 24dp |
 | 药丸额外高度 | `GlassConfig.pillExtraHeightDp`（设置界面「微调」可调） | 12dp（上下对称分摊） |
 | 药丸左右边距 | `GlassConfig.pillSideInsetDp`（设置界面「微调」可调） | 30dp（每边） |
-| 按压放大 / 焦点放大 | `DropletDragController` / `DropletPanel` | 1.2 · 1.1 |
-| 液滴高度 | `syncDropletSize()` | 药丸内高 − 2 × 4dp |
+| 按压放大 / 焦点放大 | `DropletDragController` / `DropletPanel` | 78/56（约 1.39）· 1.1 |
+| 液滴高度 | `syncDropletSize()` | 药丸内高 − 2 × 2dp |
 | 拖拽形变上限 | `DropletDragController.STRETCH_LIMIT` | 0.2 |
 
 ### 液滴
 
-静止时是一层 10% 的纯色块；按住/拖拽时按 `pressProgress` 淡入透镜：
-
+静止时是一层 10% 的纯色块；按住 / 拖拽时按 `pressProgress` 淡入透镜：
 ```
 lens(refractionHeight = 10dp × p, refractionAmount = 14dp × p,
      depthEffect = 0, chromaticAberration = 0.5)
@@ -100,7 +95,7 @@ lens(refractionHeight = 10dp × p, refractionAmount = 14dp × p,
 药丸较扁，`depthEffect` 开启会在折射边界拉出一圈环，所以这里关掉。
 
 液滴折射的是 **页面 + 一份单独绘制的 1.1× 标签副本**（KernelSU 的 `CombinedBackdrop`）。拖拽时看到的放大图标正是这份副本经折射后的样子，
-因此液滴层必须压在真实标签**之上**，而真实标签保持原尺寸——两边都缩放会叠加两次。
+因液滴层必须压在真实标签 **之上**，而真实标签保持原尺寸——两边都缩放会叠加两次。
 
 ### 动画
 
@@ -116,7 +111,7 @@ lens(refractionHeight = 10dp × p, refractionAmount = 14dp × p,
 
 两处易被忽略但决定手感的细节：位置以标签为单位追踪，速度按标签数归一化，
 因此不同屏幕密度手感一致；`release()` 会**等液滴接近目标**才回落缩放，
-这样甩动读起来是一个连贯动作而非"滑动 + 单独缩回"。
+这样甩动读起来是一个连贯动作而非“滑动 + 单独缩回”。
 
 点击切换也走同一条路径（press → 移动 → release），与拖拽完全一致。
 
